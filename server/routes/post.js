@@ -18,6 +18,6 @@ router.delete('/post/:slug', requireSignin, remove);
 //     res.json({
 //         data: req.user.name
 //     });
-// });
+// });    //implementing authorization using jwt so it cannot be accessed using postman
 
 module.exports = router;
