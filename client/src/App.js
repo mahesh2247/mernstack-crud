@@ -3,6 +3,7 @@ import Nav from './Nav';
 import axios from 'axios'
 import {Link} from 'react-router-dom'
 import renderHTML from 'react-render-html'
+import {getUser , getToken } from './helpers'
 
 
 
@@ -41,7 +42,11 @@ const App = ()=>{
 
   const deletePost = (slug)=> {
     // console.log('delete', slug, ' post');
-    axios.delete(`${process.env.REACT_APP_API}/post/${slug}`)
+    axios.delete(`${process.env.REACT_APP_API}/post/${slug}`, {
+      headers: {
+          authorization: `Bearer ${getToken()}`
+      }
+  })
     .then(response => {
       alert(response.data.message)
       fetchPosts()  //fetch remaining posts after delete
@@ -78,21 +83,36 @@ const App = ()=>{
 
 
                   </div>
-                  <div classNmae="col-md-2">
-                  <Link to={`/post/update/${post.slug}`} className="btn btn-s btn-outline-warning">
-                      Update
-                    </Link>
-                    <button onClick={()=> deleteConfirm(post.slug)} className="btn btn-sm btn-outline-danger ml-1">Delete</button>
 
-                  </div>
+                  {getUser() && (
 
-                </div>
+                      <div className="col-md-2">
+                          <Link to={`/post/update/${post.slug}`} className="btn btn-sm btn-outline-warning">
+                              Update
+                          </Link>
+                          <button 
+                              onClick={()=> deleteConfirm(post.slug)} 
+                              className="btn btn-sm btn-outline-danger ml-1">
+                                Delete
+                          </button>
+                      </div>
+
+
+
+
+
+
+
+                  )}
+            
 
 
 
               </div>
          
              </div>
+
+          </div>
 
           ))}
       </div>

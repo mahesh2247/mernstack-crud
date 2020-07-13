@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Nav from './Nav';
 import ReactQuill from 'react-quill';
-import {getUser} from './helpers'
+import {getUser, getToken } from './helpers'
 import 'react-quill/dist/quill.bubble.css';
 
 
@@ -35,7 +35,11 @@ const Create = () => {
         event.preventDefault();
         // console.table({ title, content, user });
         axios
-            .post(`${process.env.REACT_APP_API}/post`, { title, content, user })
+            .post(`${process.env.REACT_APP_API}/post`, { title, content, user },{
+                headers: {
+                    authorization: `Bearer ${getToken()}`
+                }
+            })
             .then(response => {
                 console.log(response);
                 // empty state
